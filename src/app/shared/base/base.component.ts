@@ -29,7 +29,7 @@ export class BaseComponent<GET = {}, POST = {}, PUT = {}, PATCH = {}, DELETE = {
   formGroup: FormGroup = new FormGroup({});
   host = UriConstants.HOST;
   constructor(
-    protected apiService: ApiService<GET, POST, PUT, PATCH, DELETE>,
+    protected readonly apiService: ApiService<GET, POST, PUT, PATCH, DELETE>,
   ) {
   }
 

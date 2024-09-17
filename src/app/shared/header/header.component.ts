@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthModel } from '@mean/models';
+import { AuthService } from '@mean/services';
+import { SessionStorageConstants } from '@mean/utils';
 
 @Component({
   selector: 'app-header',
@@ -10,8 +13,10 @@ export class HeaderComponent {
   logo = '../../../assets/logo.png';
   showMenuLogin = true;
   constructor(
-    private router: Router
+    private router: Router,
+    private readonly auth: AuthService
   ) {
+    this.showMenuLogin = this.auth.readFromSession(SessionStorageConstants.USER_TOKEN).user.id === 0;
   }
 
   logout() {

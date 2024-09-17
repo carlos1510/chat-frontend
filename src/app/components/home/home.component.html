@@ -2,19 +2,19 @@
 <div class="chat-container">
   <div class="chat">
     <div class="contact bar">
-      <img src="" alt="user">
+      <img src="{{host}}/{{ userData.img ? userData.img : 'default.png' }}" alt="user">
       <div class="name">
-        Juan Doe
+        {{ userData.firstName }}  {{ userData.lastName }}
       </div>
     </div>
-    <div class="messages" id="chat">
-      <div class="message {{true ? 'me' : 'others'}}">
-        <span class="user-name">Juan Doe</span> Hola
-        <em *ngIf="true" class="more-info"  (click)="op.toggle($event)">...</em>
+    <div *ngIf="messages.length !== 0" class="messages" id="chat">
+      <div *ngFor="let message of messages" class="message {{userData.id === message.userId ? 'me' : 'others'}}">
+        <span class="user-name">{{ message.firstName }}</span> {{ message.content }}
+        <em *ngIf="userData.id === message.userId" class="more-info"  (click)="op.toggle($event)">...</em>
         <div class="card-end">
           <p-overlayPanel #op>
               <ng-template pTemplate="content">
-                <em class="pi pi-trash" style="cursor: pointer;"></em>
+                <em class="pi pi-trash" style="cursor: pointer;" (click)="deleteMessage(message.id)"></em>
               </ng-template>
           </p-overlayPanel>
       </div>
@@ -28,7 +28,11 @@
     <div class="input">
       <input
         placeholder="Escribe un mensaje"
-        type="text"
+        type="text" 
+        [(ngModel)]="inputValue"
+        (keyup.enter) = "saveMessage()"
+        (keydown)="startTyping()"
+        (blur)="stopTyping()"
       />
     </div>
   </div>
